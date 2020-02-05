@@ -1,4 +1,4 @@
-from telegram_file_handlers.base_writer import BaseWriter
+from .base_writer import BaseWriter
 
 
 class MongoWriter(BaseWriter):

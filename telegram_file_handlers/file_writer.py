@@ -1,7 +1,7 @@
 import os
 import shutil
 import logging
-from telegram_file_handlers.base_writer import BaseWriter
+from .base_writer import BaseWriter
 
 logger = logging.getLogger('niikkio')
 

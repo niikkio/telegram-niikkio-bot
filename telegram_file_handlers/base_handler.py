@@ -26,7 +26,7 @@ class BaseHandler:
         response = requests.get(download_url, stream=True)
         if response.status_code == 200:
             # TODO: use tempfile
-            tmp_filename = generate_tmp_filename(file_path)
+            tmp_filename = os.path.join('/tmp/niikkio/', generate_tmp_filename(file_path))
             with open(tmp_filename, 'wb') as f_out:
                 shutil.copyfileobj(response.raw, f_out)
 

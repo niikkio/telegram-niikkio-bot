@@ -1,5 +1,5 @@
 import logging
-from telegram_file_handlers.base_handler import BaseHandler
+from .base_handler import BaseHandler
 
 
 class MockHandler(BaseHandler):
