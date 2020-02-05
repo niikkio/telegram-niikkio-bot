@@ -13,7 +13,9 @@ def setup_handlers(bot, token):
     url = f'https://api.telegram.org/file/bot{token}'
     mock_handler = MockHandler(url)
     audio_handler = AudioHandler(url, [FileWriter('audio', '/tmp/niikkio')])
-    photo_handler = PhotoHandler(url, [FileWriter('photo', '/tmp/niikkio')])
+    photo_handler = PhotoHandler(url, [FileWriter('photo', '/tmp/niikkio')],
+                                 face_cascade_source='config/haarcascade_frontalface_default.xml',
+                                 eyes_cascade_source='config/haarcascade_eye.xml')
     handlers = {
         'voice': [mock_handler, audio_handler],
         'audio': [mock_handler, audio_handler],
@@ -37,7 +39,9 @@ def setup_handlers(bot, token):
         fid = extract_file_id[content_type](message)
         file_path = bot.get_file(fid).file_path
         for h in handlers[content_type]:
-            h.handle(uid, file_path)
+            response = h.handle(uid, file_path)
+            if response:
+                bot.send_message(message.chat.id, response)
 
 
 def start_bot(config):
@@ -69,6 +73,6 @@ def setup_loggers():
 
 if __name__ == '__main__':
     conf = configparser.ConfigParser()
-    conf.read('config.ini')
+    conf.read('config/config.ini')
     setup_loggers()
     start_bot(conf)

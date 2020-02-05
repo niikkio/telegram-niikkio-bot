@@ -25,3 +25,6 @@ class AudioHandler(BaseHandler):
 
         logger.debug(f'Saving wav file: {wav_filename}...')
         self._save(user_id, wav_filename)
+        os.remove(wav_filename)
+
+        return 'Done!'
