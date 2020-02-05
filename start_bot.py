@@ -3,17 +3,21 @@ import configparser
 import logging
 from logging.handlers import RotatingFileHandler
 
-from telegram_file_handlers import MockHandler
+from telegram_file_handlers import AudioHandler, MockHandler, PhotoHandler
+from telegram_file_handlers import FileWriter, MongoWriter
 
 logger = logging.getLogger('niikkio')
 
 
-def setup_handlers(bot):
-    mock_handler = MockHandler()
+def setup_handlers(bot, token):
+    url = f'https://api.telegram.org/file/bot{token}'
+    mock_handler = MockHandler(url)
+    audio_handler = AudioHandler(url, [FileWriter('audio', '/tmp/niikkio')])
+    photo_handler = PhotoHandler(url, [FileWriter('photo', '/tmp/niikkio')])
     handlers = {
-        'voice': [mock_handler],
-        'audio': [mock_handler],
-        'photo': [mock_handler]
+        'voice': [mock_handler, audio_handler],
+        'audio': [mock_handler, audio_handler],
+        'photo': [mock_handler, photo_handler]
     }
 
     extract_file_id = {
@@ -31,8 +35,9 @@ def setup_handlers(bot):
         uid = message.from_user.id
         content_type = message.content_type
         fid = extract_file_id[content_type](message)
+        file_path = bot.get_file(fid).file_path
         for h in handlers[content_type]:
-            h.handle(content_type, uid, fid)
+            h.handle(uid, file_path)
 
 
 def start_bot(config):
@@ -42,7 +47,7 @@ def start_bot(config):
     bot = telebot.TeleBot(token)
 
     logger.debug('Setting up handlers...')
-    setup_handlers(bot)
+    setup_handlers(bot, token)
 
     logger.debug('Starting polling...')
     bot.polling()
