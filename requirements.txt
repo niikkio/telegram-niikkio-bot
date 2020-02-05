@@ -11,6 +11,7 @@ numba==0.48.0
 numpy==1.18.1
 opencv-python==4.2.0.32
 pycparser==2.19
+pymongo[tls,srv]==3.10.1
 pyTelegramBotAPI==3.6.7
 requests==2.22.0
 resampy==0.2.2

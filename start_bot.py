@@ -9,13 +9,29 @@ from telegram_file_handlers import FileWriter, MongoWriter
 logger = logging.getLogger('niikkio')
 
 
-def setup_handlers(bot, token):
+def setup_handlers(bot, token, config):
     url = f'https://api.telegram.org/file/bot{token}'
+
     mock_handler = MockHandler(url)
-    audio_handler = AudioHandler(url, [FileWriter('audio', '/tmp/niikkio')])
-    photo_handler = PhotoHandler(url, [FileWriter('photo', '/tmp/niikkio')],
+
+    mongo_pattern = r'mongodb+srv://{0}:{1}@niikkio-ihiwe.mongodb.net/test?retryWrites=true&w=majority'
+    mongo_connection_string = mongo_pattern.format(
+        config['MONGO']['USERNAME'],
+        config['MONGO']['PASSWORD']
+    )
+
+    temp_path = config['COMMON']['TEMP']
+    audio_handler = AudioHandler(url,
+                                 [
+                                     FileWriter('audio', temp_path),
+                                     MongoWriter('audio', mongo_connection_string)
+                                 ],
+                                 temp_path)
+
+    photo_handler = PhotoHandler(url, [FileWriter('photo', temp_path)], temp_path,
                                  face_cascade_source='config/haarcascade_frontalface_default.xml',
                                  eyes_cascade_source='config/haarcascade_eye.xml')
+
     handlers = {
         'voice': [mock_handler, audio_handler],
         'audio': [mock_handler, audio_handler],
@@ -51,7 +67,7 @@ def start_bot(config):
     bot = telebot.TeleBot(token)
 
     logger.debug('Setting up handlers...')
-    setup_handlers(bot, token)
+    setup_handlers(bot, token, config)
 
     logger.debug('Starting polling...')
     bot.polling()
