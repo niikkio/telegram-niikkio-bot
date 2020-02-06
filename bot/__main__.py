@@ -4,9 +4,9 @@ import configparser
 import logging
 import os
 
-from media_bot import MediaBot
-from telegram_file_handlers import AudioHandler, LoggingHandler, PhotoHandler
-from telegram_file_handlers import FileWriter, MongoWriter
+from .media_bot import MediaBot
+from .telegram_file_handlers import AudioHandler, LoggingHandler, PhotoHandler
+from .telegram_file_handlers import FileWriter, MongoWriter
 
 
 # noinspection PyBroadException
