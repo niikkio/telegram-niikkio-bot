@@ -1,15 +1,18 @@
-import pymongo
-from bson.binary import Binary
 import logging
-from .base_writer import BaseWriter
+from bson.binary import Binary
 
-logger = logging.getLogger('niikkio').getChild('mongo')
+import pymongo
+
+from .base_writer import BaseWriter
 
 
 class MongoWriter(BaseWriter):
+    """Save files to MongoDB"""
+
+    logger = logging.getLogger('niikkio').getChild('mongo')
+
     def __init__(self, category, connection_string):
-        logger.debug('Connecting to mongo db...')
-        logger.debug(f'connection_string={connection_string}')
+        self.logger.debug('Connecting to mongo db...')
         self._client = pymongo.MongoClient(connection_string)
         self._db = self._client['niikkio-database']
         super().__init__(category)
@@ -26,4 +29,4 @@ class MongoWriter(BaseWriter):
                 return_document=pymongo.ReturnDocument.AFTER
             )
 
-            logger.debug('Updating: ' + repr(doc))
+            self.logger.debug('Updating: ' + repr(doc))

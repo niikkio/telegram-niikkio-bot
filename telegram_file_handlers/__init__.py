@@ -1,6 +1,6 @@
+from telegram_file_handlers.audio_handler import AudioHandler
 from telegram_file_handlers.logging_handler import LoggingHandler
 from telegram_file_handlers.photo_handler import PhotoHandler
-from telegram_file_handlers.audio_handler import AudioHandler
 
 from telegram_file_handlers.file_writer import FileWriter
 from telegram_file_handlers.mongo_writer import MongoWriter

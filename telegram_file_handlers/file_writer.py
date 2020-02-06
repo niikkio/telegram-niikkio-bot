@@ -1,14 +1,16 @@
+import logging
 import os
 import shutil
-import logging
-from .base_writer import BaseWriter
 
-logger = logging.getLogger('niikkio')
+from .base_writer import BaseWriter
 
 
 class FileWriter(BaseWriter):
+    """Save files to filesystem"""
+
+    logger = logging.getLogger('niikkio')
+
     def __init__(self, category, path):
-        assert os.path.exists(path), 'PATH NOT EXISTS'
         self._path = path
         super().__init__(category)
 
@@ -17,10 +19,11 @@ class FileWriter(BaseWriter):
         if not os.path.exists(dest_dir):
             os.mkdir(dest_dir)
 
-        count = len(os.listdir(dest_dir))
-        ext = os.path.splitext(source_filename)[1]
+        # Generate unique filename:
+        count = len(os.listdir(dest_dir))  # count files in target directory
+        ext = os.path.splitext(source_filename)[1]  # get file extension
 
         dest_filename = f'{self._category}_message_{count}{ext}'
 
-        logger.debug(f'Writing file to destination: {dest_filename}...')
+        self.logger.debug(f'Writing file to destination: {dest_filename}...')
         shutil.copyfile(source_filename, os.path.join(dest_dir, dest_filename))
