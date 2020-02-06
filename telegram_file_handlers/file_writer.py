@@ -12,16 +12,15 @@ class FileWriter(BaseWriter):
         self._path = path
         super().__init__(category)
 
-    def write(self, user_id, src_filename):
-        dst_dir = os.path.join(self._path, str(user_id))
-        if not os.path.exists(dst_dir):
-            os.mkdir(dst_dir)
+    def save(self, user_id, source_filename):
+        dest_dir = os.path.join(self._path, str(user_id))
+        if not os.path.exists(dest_dir):
+            os.mkdir(dest_dir)
 
-        count = len(os.listdir(dst_dir))
-        ext = os.path.splitext(src_filename)[1]
+        count = len(os.listdir(dest_dir))
+        ext = os.path.splitext(source_filename)[1]
 
-        dst_filename = f'{self._category}_message_{count}{ext}'
+        dest_filename = f'{self._category}_message_{count}{ext}'
 
-        logger.debug(f'Writing file to destination: {dst_filename}...')
-        shutil.copyfile(src_filename, os.path.join(dst_dir, dst_filename))
-
+        logger.debug(f'Writing file to destination: {dest_filename}...')
+        shutil.copyfile(source_filename, os.path.join(dest_dir, dest_filename))

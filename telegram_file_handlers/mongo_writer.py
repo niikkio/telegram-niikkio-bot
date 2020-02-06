@@ -14,9 +14,9 @@ class MongoWriter(BaseWriter):
         self._db = self._client['niikkio-database']
         super().__init__(category)
 
-    def write(self, user_id, src_filename):
+    def save(self, user_id, source_filename):
         collection = self._db[self._category]
-        with open(src_filename, 'rb') as f_in:
+        with open(source_filename, 'rb') as f_in:
             encoded = Binary(f_in.read())
             doc = collection.find_one_and_update(
                 {'uid': user_id},

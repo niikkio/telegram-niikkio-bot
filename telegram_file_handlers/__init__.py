@@ -1,4 +1,4 @@
-from telegram_file_handlers.mock_handler import MockHandler
+from telegram_file_handlers.logging_handler import LoggingHandler
 from telegram_file_handlers.photo_handler import PhotoHandler
 from telegram_file_handlers.audio_handler import AudioHandler
 

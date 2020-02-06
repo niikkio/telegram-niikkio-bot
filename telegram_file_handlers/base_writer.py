@@ -6,5 +6,5 @@ class BaseWriter:
         self._category = category
 
     @abstractmethod
-    def write(self, user_id, src_filename):
+    def save(self, user_id, source_filename):
         """save entity"""

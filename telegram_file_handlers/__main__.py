@@ -1,14 +1,13 @@
-import sys
-from .audio_handler import convert_to_wav
-from .photo_handler import check_face
+import argparse
+from .audio_handler import AudioHandler
 
-if len(sys.argv) == 3:
-    if sys.argv[1] == '--convert':
-        wav = convert_to_wav(sys.argv[2])
-        print(f'Converted to {wav}!')
+parser = argparse.ArgumentParser(description='Convert audio file to .wav format.', add_help=True)
 
-    if sys.argv[1] == '--check-face':
-        face_cascade_source = 'config/haarcascade_frontalface_default.xml'
-        eyes_cascade_source = 'config/haarcascade_eye.xml'
-        result = check_face(sys.argv[2], face_cascade_source, eyes_cascade_source)
-        print('Found face!' if result else 'Face not found!')
+required = parser.add_argument_group('required arguments')
+required.add_argument('--source', help='source file', required=True)
+required.add_argument('--destination', help='destination file', required=True)
+
+args = parser.parse_args()
+
+wav = AudioHandler.convert_to_wav(source_filename=args.source, dest_filename=args.dest)
+print(f'Converted to {wav}!')
