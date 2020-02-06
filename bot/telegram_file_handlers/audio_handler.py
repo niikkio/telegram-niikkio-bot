@@ -23,7 +23,8 @@ class AudioHandler(BaseHandler):
         return dest_filename
 
     def handle(self, user_id, filename):
-        self.logger.debug(f'Converting audio file to wav-format: {filename}...')
+        self.logger.debug(
+            f'Converting audio file to wav format: {filename}...')
         wav_filename = AudioHandler.convert_to_wav(filename)
 
         self.logger.debug(f'Saving wav file: {wav_filename}...')

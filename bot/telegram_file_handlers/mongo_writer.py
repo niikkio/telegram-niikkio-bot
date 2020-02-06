@@ -24,7 +24,7 @@ class MongoWriter(BaseWriter):
             doc = collection.find_one_and_update(
                 {'uid': user_id},
                 {'$push': {'entities': encoded}},
-                projection={'uid': True, '_id': True, 'entities': False},
+                projection=['uid'],
                 upsert=True,
                 return_document=pymongo.ReturnDocument.AFTER
             )

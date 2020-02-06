@@ -14,7 +14,8 @@ def main():
     logger = logging.getLogger('niikkio')
 
     # Parse command line arguments:
-    parser = argparse.ArgumentParser(description='Bot for media files processing.', add_help=True)
+    parser = argparse.ArgumentParser(
+        description='Bot for media files processing.', add_help=True)
 
     required = parser.add_argument_group('required arguments')
     required.add_argument('--config', help='configuration file', required=True)
@@ -40,7 +41,10 @@ def main():
     # AudioHandler setup:
     audio_writers = [FileWriter('audio', temp_path)]
     try:
-        mongo_pattern = r'mongodb+srv://{0}:{1}@niikkio-ihiwe.mongodb.net/test?retryWrites=true&w=majority'
+        mongo_pattern = (
+            r'mongodb+srv://{0}:{1}@niikkio-ihiwe.mongodb.net/test?'
+            'retryWrites=true&w=majority'
+        )
         mongo_connection_string = mongo_pattern.format(
             config['MONGO']['USERNAME'],
             config['MONGO']['PASSWORD']
@@ -58,8 +62,10 @@ def main():
 
     # PhotoHandler setup:
     try:
-        face_cs = os.path.join(home_path, 'config', 'haarcascade_frontalface_default.xml')
-        eyes_cs = os.path.join(home_path, 'config', 'haarcascade_eye.xml')
+        face_cs = os.path.join(home_path, 'config',
+                               'haarcascade_frontalface_default.xml')
+        eyes_cs = os.path.join(home_path, 'config',
+                               'haarcascade_eye.xml')
         photo_handler = PhotoHandler(writers=[FileWriter('photo', temp_path)],
                                      face_cascade_source=face_cs,
                                      eyes_cascade_source=eyes_cs)

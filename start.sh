@@ -1,3 +1,3 @@
 #!/bin/bash
 . venv/bin/activate
-python -m bot --config config/config.ini
+python -W ignore -m bot --config config/config.ini

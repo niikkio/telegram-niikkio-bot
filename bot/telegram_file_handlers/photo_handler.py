@@ -21,6 +21,10 @@ class PhotoHandler(BaseHandler):
         super().__init__(writers)
 
     def find_face(self, filename):
+        """Try to find face and return boolean Result
+
+        Result = (found_faces_count > 0) and (found_eyes_count > 0)
+        """
         img = cv2.imread(filename)  # Read the input image
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # Convert to grayscale
 

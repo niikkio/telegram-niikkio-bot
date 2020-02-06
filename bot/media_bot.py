@@ -37,7 +37,8 @@ class MediaBot(telebot.TeleBot):
 
     def __init__(self, token, temp_path):
         super().__init__(token)
-        self._handlers = {content_type: [] for content_type in MediaBot.content_types}
+        self._handlers = {content_type: []
+                          for content_type in MediaBot.content_types}
         self._endpoint = f'https://api.telegram.org/file/bot{token}'
         self._temp_path = temp_path
 
@@ -68,7 +69,8 @@ class MediaBot(telebot.TeleBot):
                             self.send_message(message.chat.id, response)
 
                     except Exception:
-                        logger.error(f'Failed to handle: {temp_filename}', exc_info=True)
+                        logger.error(f'Failed to handle: {temp_filename}',
+                                     exc_info=True)
                         self.send_message(message.chat.id, self.sorry_message)
 
             except Exception:
@@ -92,7 +94,8 @@ class MediaBot(telebot.TeleBot):
 
         response = requests.get(download_url, stream=True)
         if response.status_code == 200:
-            temp_filename = os.path.join(self._temp_path, generate_temp_name(file_path))
+            temp_filename = os.path.join(self._temp_path,
+                                         generate_temp_name(file_path))
             with open(temp_filename, 'wb') as f_out:
                 shutil.copyfileobj(response.raw, f_out)
 
