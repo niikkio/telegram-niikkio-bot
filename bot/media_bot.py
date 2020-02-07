@@ -39,6 +39,7 @@ class MediaBot(telebot.TeleBot):
         super().__init__(token)
         self._handlers = {content_type: []
                           for content_type in MediaBot.content_types}
+        self._session = requests.Session()
         self._endpoint = f'https://api.telegram.org/file/bot{token}'
         self._temp_path = temp_path
 
@@ -92,7 +93,7 @@ class MediaBot(telebot.TeleBot):
             # TODO: use tempfile
             return str(abs(hash(url))) + os.path.splitext(url)[1]
 
-        response = requests.get(download_url, stream=True)
+        response = self._session.get(download_url, stream=True)
         if response.status_code == 200:
             temp_filename = os.path.join(self._temp_path,
                                          generate_temp_name(file_path))
